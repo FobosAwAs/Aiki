@@ -11,7 +11,7 @@ public class DBConnect {
     String bd = "";
     String url = "jdbc:mariadb://localhost:3306/";
     String user = "root";
-    String password = "toor";
+    String password = "";
     String driver = "org.mariadb.jdbc.Driver";
     Connection cx;
 
@@ -33,7 +33,7 @@ public class DBConnect {
 
     public static DBConnect iniciar() {
         
-        return new DBConnect("proyectodeaula");
+        return new DBConnect("akira2");
 
     }
 

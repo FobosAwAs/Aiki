@@ -91,9 +91,12 @@ public class Login extends javax.swing.JFrame {
         Usuario usuario = UsuariosDB.getUsuarioByUsuarioAndContrasena(cx, user, password);
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "BIENVENIDO " + usuario.getUsuario().toUpperCase());
-            Proceso p = new Proceso();
-            p.setVisible(true);
+            //Proceso p = new Proceso();
+            //p.setVisible(true);
             this.setVisible(false);
+            PrincipalCliente principalCliente = new PrincipalCliente();
+            principalCliente.setVisible(true);
+            principalCliente.setUsuarioLogueado(usuario);
         } else {
             JOptionPane.showMessageDialog(this, "EL USUARIO NO EXISTE EN LA BD");
         }

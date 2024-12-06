@@ -1,18 +1,31 @@
 package ventanas;
 
+import dbconnect.DBConnect;
+import dbconnect.EmpleadoDB;
+import java.awt.Color;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import models.Empleo;
+import models.Usuario;
+
+
 
 public class PrincipalCliente extends javax.swing.JFrame {
 
+    static DBConnect cx;
     Ventana1 v1 = new Ventana1();
     Ventana2 v2 = new Ventana2();
+    Usuario usuarioLogueado = null;
 
     public PrincipalCliente() {
         initComponents();
-//        fondo.add(v1);
-//        fondo.add(v2);
-
+        cx = DBConnect.iniciar();
+        cx.conectar();
+        llenarComboEmpleados();
         int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
         int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 //        barraHerramientas.setFloatable(false);
@@ -26,15 +39,15 @@ public class PrincipalCliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
+        jComboEmpleados = new javax.swing.JComboBox<>();
+        btnBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jCalendar2 = new com.toedter.calendar.JCalendar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jCalendarCliente = new com.toedter.calendar.JDateChooser();
         menuPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuTipoEmpleado = new javax.swing.JMenuItem();
@@ -52,13 +65,22 @@ public class PrincipalCliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin filtro", "Días disponibles", "Días agendados" }));
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(400, 90, 170, 26);
+        jComboEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboEmpleadosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jComboEmpleados);
+        jComboEmpleados.setBounds(400, 90, 170, 22);
 
-        jButton3.setText("Filtrar");
-        getContentPane().add(jButton3);
-        jButton3.setBounds(600, 90, 57, 24);
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBuscar);
+        btnBuscar.setBounds(600, 90, 80, 23);
 
         jScrollPane2.setViewportView(jTextPane2);
 
@@ -72,16 +94,16 @@ public class PrincipalCliente extends javax.swing.JFrame {
         jLabel3.setText("Descripción");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(380, 150, 90, 16);
-        getContentPane().add(jCalendar2);
-        jCalendar2.setBounds(30, 100, 300, 220);
 
         jButton1.setText("Editar solicitud");
         getContentPane().add(jButton1);
-        jButton1.setBounds(610, 240, 100, 24);
+        jButton1.setBounds(610, 240, 100, 23);
 
         jButton2.setText("Agregar solicitud");
         getContentPane().add(jButton2);
-        jButton2.setBounds(610, 190, 104, 24);
+        jButton2.setBounds(610, 190, 120, 23);
+        getContentPane().add(jCalendarCliente);
+        jCalendarCliente.setBounds(60, 90, 220, 30);
 
         jMenu1.setText("Tipo de empleado");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +164,26 @@ public class PrincipalCliente extends javax.swing.JFrame {
         v2.setVisible(true);
     }//GEN-LAST:event_jMenu2ActionPerformed
 
+    private void jComboEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadosActionPerformed
+        
+    }//GEN-LAST:event_jComboEmpleadosActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String empleadoSeleccionado = this.jComboEmpleados.getSelectedItem().toString();
+        List<Date> fechas = new ArrayList<>();
+        if(!"Seleccione...".equals(empleadoSeleccionado)){
+            List <Empleo> empleos = EmpleadoDB.getEmpleadoByUsuario(cx, empleadoSeleccionado);
+            for (Empleo empleo : empleos) {            
+                System.out.println(empleo.getFecha());
+                fechas.add(empleo.getFecha());
+            }  
+            actualizarCalendario(fechas);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un empleado");
+        }
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -165,9 +207,6 @@ public class PrincipalCliente extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PrincipalCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -176,14 +215,33 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void llenarComboEmpleados() {
+        List<Usuario> usuarios = EmpleadoDB.getEmpleados(cx);
+
+        jComboEmpleados.removeAllItems();
+        jComboEmpleados.addItem("Seleccione...");
+        for (Usuario user : usuarios) {            
+            jComboEmpleados.addItem(user.getNombre());
+        }
+    }
+    
+    public void setUsuarioLogueado(Usuario usuario) {
+        this.usuarioLogueado = usuario;
+    }
+    
+    public void actualizarCalendario(List<Date> fechasBloqueadas) {
+        jCalendarCliente.setMinSelectableDate(fechasBloqueadas.get(0));
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem borrarNotificacion;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private com.toedter.calendar.JCalendar jCalendar2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private com.toedter.calendar.JDateChooser jCalendarCliente;
+    private javax.swing.JComboBox<String> jComboEmpleados;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
