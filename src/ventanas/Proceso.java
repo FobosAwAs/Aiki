@@ -2,9 +2,12 @@ package ventanas;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Usuario;
 
 public class Proceso extends javax.swing.JFrame {
 
+    Usuario usuario;
+    
     public Proceso() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -18,12 +21,20 @@ public class Proceso extends javax.swing.JFrame {
                 for (int i = 1; i <= 100; i++) {
                     try {
                         barra.setValue(i);
-                        lblPorcentaje.setText(i+" $");
+                        lblPorcentaje.setText(i + " $");
                         Thread.sleep(10);
-                        if(i==100){
-                            PrincipalEmpleado p=new PrincipalEmpleado();
-                            p.setVisible(true);
-                            setVisible(false);
+                        if (i == 100) {
+                            if ("C".equalsIgnoreCase(usuario.getRol())) {
+                                PrincipalCliente principalCliente = new PrincipalCliente();
+                                principalCliente.setVisible(true);
+                                setVisible(false);
+                                System.out.println("Soy cliente");
+                            } else {
+                                PrincipalEmpleado principalEmpleado = new PrincipalEmpleado();
+                                principalEmpleado.setVisible(true);
+                                setVisible(false);
+                                System.out.println("Soy empleado");
+                            }
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Proceso.class.getName()).log(Level.SEVERE, null, ex);
@@ -32,6 +43,14 @@ public class Proceso extends javax.swing.JFrame {
             }
         });
         hilo.start();
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @SuppressWarnings("unchecked")

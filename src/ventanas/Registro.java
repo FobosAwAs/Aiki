@@ -19,7 +19,7 @@ public class Registro extends javax.swing.JFrame {
     public Registro() {
         initComponents();
         this.setTitle("LOGIN");
-        setSize(400, 300);
+        setSize(350, 500);
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/login.png"));
         lblLogo.setIcon(new ImageIcon(img.getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_SMOOTH)));
         this.setIconImage(img);
@@ -162,8 +162,9 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        System.exit(0);
-
+        Login login = new Login();
+        login.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed

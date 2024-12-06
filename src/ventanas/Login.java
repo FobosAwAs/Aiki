@@ -15,6 +15,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setTitle("LOGIN");
+        setSize(350, 500);
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/login.png"));
         lblLogo.setIcon(new ImageIcon(img.getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_SMOOTH)));
         this.setIconImage(img);
@@ -41,17 +42,17 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Usuario");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
 
         jLabel2.setText("Password");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 254, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
         txtUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserActionPerformed(evt);
             }
         });
-        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 180, 190, 36));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 170, 30));
 
         btnIniciar.setText("Iniciar");
         btnIniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -59,7 +60,7 @@ public class Login extends javax.swing.JFrame {
                 btnIniciarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 98, 40));
+        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 100, 30));
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
         getContentPane().add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 15, 212, 147));
@@ -69,10 +70,10 @@ public class Login extends javax.swing.JFrame {
                 txtPasswordActionPerformed(evt);
             }
         });
-        getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 242, 190, 40));
+        getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 170, 30));
 
         jLabel3.setText("¿No está registrado?");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 330, -1, -1));
 
         jButton1.setText("Registrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +81,7 @@ public class Login extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 360, 100, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -91,8 +92,9 @@ public class Login extends javax.swing.JFrame {
         Usuario usuario = UsuariosDB.getUsuarioByUsuarioAndContrasena(cx, user, password);
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "BIENVENIDO " + usuario.getUsuario().toUpperCase());
-            //Proceso p = new Proceso();
-            //p.setVisible(true);
+            Proceso proceso = new Proceso();
+            proceso.setUsuario(usuario);
+            proceso.setVisible(true);
             this.setVisible(false);
             PrincipalCliente principalCliente = new PrincipalCliente();
             principalCliente.setVisible(true);
