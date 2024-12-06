@@ -9,7 +9,7 @@ package models;
  * @author Aiki
  */
 public class Usuario {
-  
+    int id;
     String nombre;
     String apellido;
     String usuario;
@@ -18,6 +18,7 @@ public class Usuario {
 
     public Usuario(int id, String nombre, String apellido, String usuario, String contrasena, String rol) {
 
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.usuario = usuario;
@@ -43,6 +44,14 @@ public class Usuario {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

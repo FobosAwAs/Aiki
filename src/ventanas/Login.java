@@ -96,9 +96,6 @@ public class Login extends javax.swing.JFrame {
             proceso.setUsuario(usuario);
             proceso.setVisible(true);
             this.setVisible(false);
-            PrincipalCliente principalCliente = new PrincipalCliente();
-            principalCliente.setVisible(true);
-            principalCliente.setUsuarioLogueado(usuario);
         } else {
             JOptionPane.showMessageDialog(this, "EL USUARIO NO EXISTE EN LA BD");
         }

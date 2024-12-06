@@ -1,41 +1,78 @@
 package ventanas;
 
+import dbconnect.DBConnect;
+import dbconnect.EmpleadoDB;
 import java.awt.Toolkit;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import models.Empleo;
+import models.Usuario;
+import static ventanas.Login.cx;
 
 public class PrincipalEmpleado extends javax.swing.JFrame {
 
-    Ventana1 v1 = new Ventana1();
-    Ventana2 v2 = new Ventana2();
-
-    public PrincipalEmpleado() {
+   static DBConnect cx;
+   Usuario usuario;
+   
+    public PrincipalEmpleado(Usuario usuario) {
         initComponents();
-//        fondo.add(v1);
-//        fondo.add(v2);
-
+        this.usuario = usuario;
+        cx = DBConnect.iniciar();
+        cx.conectar();
+        
+        
+        cargarTabla();     
         int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
         int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
-//        barraHerramientas.setFloatable(false);
-//        barraHerramientas.setSize(ancho, 40);
-//        fondo.setSize(ancho, alto);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
+    
+     public PrincipalEmpleado() {
+      
+    }
+    
+    private void cargarTabla() {
+    // Crear el modelo de la tabla
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("ID");
+    modelo.addColumn("ID Empleado");
+    modelo.addColumn("Fecha");
+    modelo.addColumn("Descripción");
 
+    // Simulación: Lista de objetos Empleo
+    List<Empleo> empleos = EmpleadoDB.getEmpleadoByUsuario(cx, usuario.getUsuario()); // Método para obtener los empleos
+
+    // Llenar la tabla con los datos de los objetos Empleo
+    for (Empleo empleo : empleos) {
+        modelo.addRow(new Object[]{
+            empleo.getId(),
+            empleo.getIdEmpleado(),
+            empleo.getFecha(),
+            empleo.getDescripcion()
+        });
+    }
+
+    // Asignar el modelo a la tabla
+    tablaEmpleo.setModel(modelo);
+}
+
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jCalendar2 = new com.toedter.calendar.JCalendar();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaEmpleo = new javax.swing.JTable();
         menuPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
@@ -49,37 +86,21 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin filtro", "Días disponibles", "Días agendados" }));
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(400, 90, 170, 26);
+        tablaEmpleo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tablaEmpleo);
 
-        jLabel1.setText("Información del cliente");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(590, 150, 130, 16);
-
-        jButton3.setText("Filtrar");
-        getContentPane().add(jButton3);
-        jButton3.setBounds(600, 90, 57, 24);
-
-        jScrollPane1.setViewportView(jTextPane1);
-
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(580, 170, 180, 170);
-
-        jScrollPane2.setViewportView(jTextPane2);
-
-        getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(370, 170, 180, 170);
-
-        jLabel2.setText("Filtrar agenda");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(400, 70, 80, 16);
-
-        jLabel3.setText("Descripción");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(380, 150, 90, 16);
-        getContentPane().add(jCalendar2);
-        jCalendar2.setBounds(30, 100, 300, 220);
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(30, 70, 680, 240);
 
         jMenu1.setLabel("Solicitudes");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -131,19 +152,19 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        v1.setVisible(true);
+       
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        v2.setVisible(true);
+       
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-        v1.show();
+      
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
     private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
-        v2.show();
+       
     }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
 
     public static void main(String args[]) {
@@ -180,23 +201,15 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private com.toedter.calendar.JCalendar jCalendar2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuBar menuPrincipal;
+    private javax.swing.JTable tablaEmpleo;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,16 +24,18 @@ public class Proceso extends javax.swing.JFrame {
                         lblPorcentaje.setText(i + " $");
                         Thread.sleep(10);
                         if (i == 100) {
+                            System.out.println("Pase por aqui");
                             if ("C".equalsIgnoreCase(usuario.getRol())) {
+                                System.out.println("Soy cliente");
                                 PrincipalCliente principalCliente = new PrincipalCliente();
                                 principalCliente.setVisible(true);
                                 setVisible(false);
-                                System.out.println("Soy cliente");
                             } else {
-                                PrincipalEmpleado principalEmpleado = new PrincipalEmpleado();
+                                System.out.println("Soy empleado");
+                                PrincipalEmpleado principalEmpleado = new PrincipalEmpleado(usuario);                                                            
                                 principalEmpleado.setVisible(true);
                                 setVisible(false);
-                                System.out.println("Soy empleado");
+                                
                             }
                         }
                     } catch (InterruptedException ex) {
