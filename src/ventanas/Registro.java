@@ -1,6 +1,7 @@
 package ventanas;
 
 import dbconnect.DBConnect;
+import dbconnect.UsuariosDB;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.SQLException;
@@ -112,7 +113,7 @@ public class Registro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-     try {
+     
      
         Usuario usuario = new Usuario();
         usuario.setNombre(txtNombre.getText());
@@ -121,39 +122,10 @@ public class Registro extends javax.swing.JFrame {
         usuario.setContrasena(String.valueOf(txtPassword.getPassword()));
         usuario.setRol(tipoUsuarioChoice.getSelectedItem().toString().equals("Cliente") ? "C" : "E"); 
 
-       
-        String checkQuery = "SELECT * FROM usuarios WHERE usuario = ?";
-        java.sql.PreparedStatement checkStmt = cx.conectar().prepareStatement(checkQuery);
-        checkStmt.setString(1, usuario.getUsuario());
-        java.sql.ResultSet rs = checkStmt.executeQuery();
+        UsuariosDB.insertUser(cx, usuario);
 
-        if (rs.next()) {
-            JOptionPane.showMessageDialog(this, "El usuario ya existe, intenta con otro nombre de usuario.");
-        } else {
-            String insertQuery = "INSERT INTO usuarios (nombre, apellido, usuario, contrasena, rol) VALUES (?, ?, ?, ?, ?)";
-            java.sql.PreparedStatement insertStmt = cx.conectar().prepareStatement(insertQuery);
-            insertStmt.setString(1, usuario.getNombre());
-            insertStmt.setString(2, usuario.getApellido());
-            insertStmt.setString(3, usuario.getUsuario());
-            insertStmt.setString(4, usuario.getContrasena());
-            insertStmt.setString(5, usuario.getRol());
 
-            int rowsInserted = insertStmt.executeUpdate();
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
-                // Opcional: Limpiar campos o redirigir
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al registrar el usuario.");
-            }
-        }
-
-        rs.close();
-        checkStmt.close();
-
-    } catch (SQLException ex) {
-        Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "Ocurrió un error al intentar registrar el usuario.");
-    }
+    
 
     }//GEN-LAST:event_btnIniciarActionPerformed
 

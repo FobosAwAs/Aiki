@@ -7,6 +7,7 @@ package dbconnect;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.Usuario;
 
 /**
@@ -40,8 +41,40 @@ public class UsuariosDB {
         return null;
     }
     
-//    public static Usuario crearUsuario(DBConnect cx, Usuario usuario) {}
-    
-//    public static Usuario[] getUsuarios(DBConnect cx) {}  //para el admn
+    public static void insertUser(DBConnect cx, Usuario usuario){
+        try{
+            
+        String checkQuery = "SELECT * FROM usuarios WHERE usuario = ?";
+        java.sql.PreparedStatement checkStmt = cx.conectar().prepareStatement(checkQuery);
+        checkStmt.setString(1, usuario.getUsuario());
+        java.sql.ResultSet rs = checkStmt.executeQuery();
 
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(null, "El usuario ya existe, intenta con otro nombre de usuario.");
+        } else {
+            String insertQuery = "INSERT INTO usuarios (nombre, apellido, usuario, contrasena, rol) VALUES (?, ?, ?, ?, ?)";
+            java.sql.PreparedStatement insertStmt = cx.conectar().prepareStatement(insertQuery);
+            insertStmt.setString(1, usuario.getNombre());
+            insertStmt.setString(2, usuario.getApellido());
+            insertStmt.setString(3, usuario.getUsuario());
+            insertStmt.setString(4, usuario.getContrasena());
+            insertStmt.setString(5, usuario.getRol());
+
+            int rowsInserted = insertStmt.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+                // Opcional: Limpiar campos o redirigir
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
+            }
+        }
+
+        rs.close();
+        checkStmt.close();
+        
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 }
