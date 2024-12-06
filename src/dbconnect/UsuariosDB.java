@@ -27,7 +27,7 @@ public class UsuariosDB {
                 String apellido = rs.getString("apellido");
                 String usuario = rs.getString("usuario"); 
                 String contrasena = rs.getString("contrasena");
-                int rol = rs.getInt("rol");
+                String  rol = rs.getString("rol");
                 
                 Usuario userModel = new Usuario(id, nombre, apellido, usuario, contrasena, rol);
                 return userModel;

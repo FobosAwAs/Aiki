@@ -35,6 +35,7 @@ public class Login extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -58,7 +59,7 @@ public class Login extends javax.swing.JFrame {
                 btnIniciarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 310, 98, 40));
+        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 98, 40));
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
         getContentPane().add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 15, 212, 147));
@@ -71,7 +72,15 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 242, 190, 40));
 
         jLabel3.setText("¿No está registrado?");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, -1, -1));
+
+        jButton1.setText("Registrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -97,6 +106,12 @@ public class Login extends javax.swing.JFrame {
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
     }//GEN-LAST:event_txtUserActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    Registro registroFrame = new Registro();
+    registroFrame.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,6 +153,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

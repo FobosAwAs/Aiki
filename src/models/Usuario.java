@@ -9,20 +9,24 @@ package models;
  * @author Aiki
  */
 public class Usuario {
-    int id;
+  
     String nombre;
     String apellido;
     String usuario;
     String contrasena;
-    int rol;
+    String rol;
 
-    public Usuario(int id, String nombre, String apellido, String usuario, String contrasena, int rol) {
-        this.id = id;
+    public Usuario(int id, String nombre, String apellido, String usuario, String contrasena, String rol) {
+      
         this.nombre = nombre;
         this.apellido = apellido;
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.rol = rol;
+    }
+    
+    public Usuario() {
+        
     }
 
     public String getUsuario() {
@@ -41,16 +45,6 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -67,14 +61,12 @@ public class Usuario {
         this.apellido = apellido;
     }
 
-    public int getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(int rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
-    
-    
-    
+ 
 }
