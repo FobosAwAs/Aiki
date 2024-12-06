@@ -1,13 +1,18 @@
 package ventanas;
 
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
 import dbconnect.DBConnect;
 import dbconnect.EmpleadoDB;
-import java.awt.Color;
-import java.awt.Toolkit;
+import dbconnect.EmpleoDB;
+import java.awt.Component;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import models.Empleo;
 import models.Usuario;
@@ -19,19 +24,16 @@ public class PrincipalCliente extends javax.swing.JFrame {
     static DBConnect cx;
     Ventana1 v1 = new Ventana1();
     Ventana2 v2 = new Ventana2();
-    Usuario usuarioLogueado = null;
+    List<Usuario> empleados = null;
 
     public PrincipalCliente() {
         initComponents();
+        jCalendarCliente.setEnabled(false);
+        setSize(700, 500);
         cx = DBConnect.iniciar();
         cx.conectar();
         llenarComboEmpleados();
-        int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
-        int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
-//        barraHerramientas.setFloatable(false);
-//        barraHerramientas.setSize(ancho, 40);
-//        fondo.setSize(ancho, alto);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -42,12 +44,12 @@ public class PrincipalCliente extends javax.swing.JFrame {
         jComboEmpleados = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
+        textDescripcion = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
         jCalendarCliente = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
         menuPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuTipoEmpleado = new javax.swing.JMenuItem();
@@ -71,7 +73,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jComboEmpleados);
-        jComboEmpleados.setBounds(400, 90, 170, 22);
+        jComboEmpleados.setBounds(220, 80, 170, 22);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -80,30 +82,35 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(600, 90, 80, 23);
+        btnBuscar.setBounds(410, 80, 80, 23);
 
-        jScrollPane2.setViewportView(jTextPane2);
+        jScrollPane2.setViewportView(textDescripcion);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(370, 170, 180, 170);
+        jScrollPane2.setBounds(220, 200, 290, 70);
 
-        jLabel2.setText("Filtrar agenda");
+        jLabel2.setText("Filtrar Empleado");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(400, 70, 80, 16);
+        jLabel2.setBounds(220, 60, 80, 16);
 
-        jLabel3.setText("Descripción");
+        jLabel3.setText("Fecha");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(380, 150, 90, 16);
+        jLabel3.setBounds(220, 110, 90, 16);
 
-        jButton1.setText("Editar solicitud");
-        getContentPane().add(jButton1);
-        jButton1.setBounds(610, 240, 100, 23);
-
-        jButton2.setText("Agregar solicitud");
-        getContentPane().add(jButton2);
-        jButton2.setBounds(610, 190, 120, 23);
+        btnAgregar.setText("Agregar solicitud");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAgregar);
+        btnAgregar.setBounds(220, 320, 120, 30);
         getContentPane().add(jCalendarCliente);
-        jCalendarCliente.setBounds(60, 90, 220, 30);
+        jCalendarCliente.setBounds(220, 130, 220, 30);
+
+        jLabel4.setText("Descripción");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(220, 180, 90, 16);
 
         jMenu1.setText("Tipo de empleado");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +177,8 @@ public class PrincipalCliente extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String empleadoSeleccionado = this.jComboEmpleados.getSelectedItem().toString();
+        jCalendarCliente.setEnabled(true);
+        jCalendarCliente.setDate(null);
         List<Date> fechas = new ArrayList<>();
         if(!"Seleccione...".equals(empleadoSeleccionado)){
             List <Empleo> empleos = EmpleadoDB.getEmpleadoByUsuario(cx, empleadoSeleccionado);
@@ -178,11 +187,29 @@ public class PrincipalCliente extends javax.swing.JFrame {
                 fechas.add(empleo.getFecha());
             }  
             actualizarCalendario(fechas);
+            JOptionPane.showMessageDialog(this, "Se cargaron los dias disponibles");
         } else {
             JOptionPane.showMessageDialog(this, "Por favor seleccione un empleado");
         }
         
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String nombreEmpleado = jComboEmpleados.getSelectedItem().toString();
+        Date fechaSeleccionada = jCalendarCliente.getDate();
+        String descripcion = textDescripcion.getText();
+        int idEmpleado = obtenerIdEmpleado(nombreEmpleado);
+        
+        Empleo nuevoEmpleo = 
+                new Empleo(0, idEmpleado, fechaSeleccionada, descripcion);
+        
+        if(validarCampos(idEmpleado, fechaSeleccionada)){
+            EmpleoDB.insertEmpleoByEmpleado(cx, nuevoEmpleo);
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor complete los campos");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -217,45 +244,118 @@ public class PrincipalCliente extends javax.swing.JFrame {
     }
     
     private void llenarComboEmpleados() {
-        List<Usuario> usuarios = EmpleadoDB.getEmpleados(cx);
-
+        this.empleados = EmpleadoDB.getEmpleados(cx);
         jComboEmpleados.removeAllItems();
         jComboEmpleados.addItem("Seleccione...");
-        for (Usuario user : usuarios) {            
+        for (Usuario user : empleados) {            
             jComboEmpleados.addItem(user.getNombre());
         }
     }
-    
-    public void setUsuarioLogueado(Usuario usuario) {
-        this.usuarioLogueado = usuario;
-    }
+   
     
     public void actualizarCalendario(List<Date> fechasBloqueadas) {
-        jCalendarCliente.setMinSelectableDate(fechasBloqueadas.get(0));
+    JDayChooser dayChooser = jCalendarCliente.getJCalendar().getDayChooser();
+    JMonthChooser jMonthChooser = jCalendarCliente.getJCalendar().getMonthChooser();
+    JYearChooser jYearChooser = jCalendarCliente.getJCalendar().getYearChooser();
+
+    dayChooser.addPropertyChangeListener(event -> {
+        if ("day".equals(event.getPropertyName())) {
+            dashabilitarDias(fechasBloqueadas);
+        }
+    });
+
+    jMonthChooser.addPropertyChangeListener(event -> {
+        dashabilitarDias(fechasBloqueadas);
+    });
+
+    jYearChooser.addPropertyChangeListener(event -> {
+        dashabilitarDias(fechasBloqueadas);
+    });
+}
+
+    private void dashabilitarDias(List<Date> fechasBloqueadas) {
+        JDayChooser dayChooser = jCalendarCliente.getJCalendar().getDayChooser();
+        JMonthChooser jMonthChooser = jCalendarCliente.getJCalendar().getMonthChooser();
+        JYearChooser jYearChooser = jCalendarCliente.getJCalendar().getYearChooser();
+
+        Calendar calendar = Calendar.getInstance();
+
+        for (int i = 1; i < dayChooser.getDayPanel().getComponentCount(); i++) {
+            Component component = dayChooser.getDayPanel().getComponent(i - 1);
+
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                try {
+                    int dia = Integer.parseInt(button.getText());
+                    int mes = jMonthChooser.getMonth();
+                    int anio = jYearChooser.getYear();
+                    
+                    calendar.set(anio, mes, dia);
+                    
+                    for (Date fechaBloqueada : fechasBloqueadas) {
+                        if (compararDia(fechaBloqueada, calendar.getTime())) {
+                            button.setEnabled(false);
+                            break;
+                        } else {
+                            button.setEnabled(true);
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: " + e.toString());
+                }
+            }
+        }
     }
 
+    private boolean compararDia(Date date1, Date date2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date1).equals(sdf.format(date2));
+    }
+    
+    private int obtenerIdEmpleado(String nombre){
+        for(Usuario empleado: this.empleados){
+            if(nombre.equals(empleado.getNombre())){
+                return empleado.getId();
+            }
+        }
+        return 0;
+    }
+    
+    public boolean validarCampos(int id, Date fecha) {
+        return !(id == 0 || fecha == null);
+    }
+    
+    public void limpiarCampos() {
+        jCalendarCliente.setCalendar(null);
+        jCalendarCliente.setEnabled(false);
+        textDescripcion.setText("");
+        jComboEmpleados.setSelectedIndex(0);
+    }
+
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem borrarNotificacion;
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jCalendarCliente;
     private javax.swing.JComboBox<String> jComboEmpleados;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane2;
     private javax.swing.JMenuItem listadoEmpleados;
     private javax.swing.JMenuItem logOut;
     private javax.swing.JMenuItem marcarComoVisto;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem menuTipoEmpleado;
+    private javax.swing.JTextPane textDescripcion;
     private javax.swing.JMenuItem verNotificaciones;
     // End of variables declaration//GEN-END:variables
 }
