@@ -125,11 +125,12 @@ public class PrincipalCliente extends javax.swing.JFrame {
         List<Date> fechas = new ArrayList<>();
         if(!"Seleccione...".equals(empleadoSeleccionado)){
             int idEmpleado = obtenerIdEmpleado(empleadoSeleccionado);
-            List <Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, idEmpleado);
-            for (Empleo empleo : empleos) {            
-                System.out.println(empleo.getFecha());
-                fechas.add(empleo.getFecha());
-            }  
+            List<Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, idEmpleado);
+            for (Empleo empleo : empleos) {
+                if (empleo.getEstado() == 1) {
+                    fechas.add(empleo.getFecha());
+                }
+            }
             evaluator.setFechas(fechas);
             JOptionPane.showMessageDialog(this, "Se cargaron los dias disponibles");
         } else {
