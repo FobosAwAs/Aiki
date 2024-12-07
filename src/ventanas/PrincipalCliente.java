@@ -1,21 +1,15 @@
 package ventanas;
 
-import com.toedter.calendar.JDayChooser;
-import com.toedter.calendar.JMonthChooser;
-import com.toedter.calendar.JYearChooser;
 import dbconnect.DBConnect;
 import dbconnect.EmpleadoDB;
 import dbconnect.EmpleoDB;
-import java.awt.Component;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import models.Empleo;
 import models.Usuario;
+import models.EvaluadorFecha;
 
 
 
@@ -25,6 +19,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
     Ventana1 v1 = new Ventana1();
     Ventana2 v2 = new Ventana2();
     List<Usuario> empleados = null;
+    EvaluadorFecha evaluator = new EvaluadorFecha();
 
     public PrincipalCliente() {
         initComponents();
@@ -34,6 +29,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         cx.conectar();
         llenarComboEmpleados();
         this.setLocationRelativeTo(null);
+        jCalendarCliente.getJCalendar().getDayChooser().addDateEvaluator(evaluator);
     }
 
     @SuppressWarnings("unchecked")
@@ -187,7 +183,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
                 System.out.println(empleo.getFecha());
                 fechas.add(empleo.getFecha());
             }  
-            actualizarCalendario(fechas);
+            evaluator.setFechas(fechas);
             JOptionPane.showMessageDialog(this, "Se cargaron los dias disponibles");
         } else {
             JOptionPane.showMessageDialog(this, "Por favor seleccione un empleado");
@@ -252,67 +248,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
             jComboEmpleados.addItem(user.getId() + "-" + user.getNombre().concat(" " + user.getApellido()));
         }
     }
-   
-    
-    public void actualizarCalendario(List<Date> fechasBloqueadas) {
-    JDayChooser dayChooser = jCalendarCliente.getJCalendar().getDayChooser();
-    JMonthChooser jMonthChooser = jCalendarCliente.getJCalendar().getMonthChooser();
-    JYearChooser jYearChooser = jCalendarCliente.getJCalendar().getYearChooser();
-
-    dayChooser.addPropertyChangeListener(event -> {
-        if ("day".equals(event.getPropertyName())) {
-            dashabilitarDias(fechasBloqueadas);
-        }
-    });
-
-    jMonthChooser.addPropertyChangeListener(event -> {
-        dashabilitarDias(fechasBloqueadas);
-    });
-
-    jYearChooser.addPropertyChangeListener(event -> {
-        dashabilitarDias(fechasBloqueadas);
-    });
-}
-
-    private void dashabilitarDias(List<Date> fechasBloqueadas) {
-        JDayChooser dayChooser = jCalendarCliente.getJCalendar().getDayChooser();
-        JMonthChooser jMonthChooser = jCalendarCliente.getJCalendar().getMonthChooser();
-        JYearChooser jYearChooser = jCalendarCliente.getJCalendar().getYearChooser();
-
-        Calendar calendar = Calendar.getInstance();
-
-        for (int i = 1; i < dayChooser.getDayPanel().getComponentCount(); i++) {
-            Component component = dayChooser.getDayPanel().getComponent(i - 1);
-
-            if (component instanceof JButton) {
-                JButton button = (JButton) component;
-                try {
-                    int dia = Integer.parseInt(button.getText());
-                    int mes = jMonthChooser.getMonth();
-                    int anio = jYearChooser.getYear();
-                    
-                    calendar.set(anio, mes, dia);
-                    
-                    for (Date fechaBloqueada : fechasBloqueadas) {
-                        if (compararDia(fechaBloqueada, calendar.getTime())) {
-                            button.setEnabled(false);
-                            break;
-                        } else {
-                            button.setEnabled(true);
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("Error: " + e.toString());
-                }
-            }
-        }
-    }
-
-    private boolean compararDia(Date date1, Date date2) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date1).equals(sdf.format(date2));
-    }
-    
+ 
     private int obtenerIdEmpleado(String nombre) {
     if (nombre != null && nombre.contains("-")) {
         String[] partes = nombre.split("-");
