@@ -21,7 +21,7 @@ public class Proceso extends javax.swing.JFrame {
                 for (int i = 1; i <= 100; i++) {
                     try {
                         barra.setValue(i);
-                        lblPorcentaje.setText(i + " $");
+                        lblPorcentaje.setText(i + " %");
                         Thread.sleep(10);
                         if (i == 100) {
                             System.out.println("Pase por aqui");
