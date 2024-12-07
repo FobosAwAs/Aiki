@@ -20,7 +20,7 @@ import models.Usuario;
 public class EmpleadoDB {
     public static List<Usuario> getEmpleados(DBConnect cx) {
         List<Usuario> usuarios = new ArrayList<>();
-        String query = "SELECT * FROM usuarios";
+        String query = "SELECT * FROM usuarios WHERE rol = 'E'";
         try (
             java.sql.Connection connection = cx.conectar();
             java.sql.Statement st = connection.createStatement();
@@ -43,28 +43,28 @@ public class EmpleadoDB {
         return usuarios;
     }
     
-    public static List<Empleo> getEmpleadoByUsuario(DBConnect cx, String usuario) {
-        List<Empleo> empleos = new ArrayList<>();
-        String query = "SELECT * FROM empleos "
-                + "INNER JOIN usuarios ON empleos.idEmpleado = usuarios.id "
-                + "WHERE usuarios.nombre = '" + usuario + "'";
-        try (
-            java.sql.Connection connection = cx.conectar();
-            java.sql.Statement st = connection.createStatement();
-            java.sql.ResultSet rs = st.executeQuery(query)
-        ) {
-            while (rs.next()) {
-                int id = rs.getInt("id"); 
-                int idEmpleado = rs.getInt("idEmpleado");
-                Date fecha = rs.getDate("fechaEmpleo");
-                String descripcion = rs.getString("descripcion"); 
-                
-                Empleo empleoModel = new Empleo(id, idEmpleado, fecha, descripcion);
-                empleos.add(empleoModel);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuariosDB.class.getName()).log(Level.SEVERE, null, ex);
+public static List<Empleo> getEmpleadoByIdUsuario(DBConnect cx, int idUsuario) {
+    List<Empleo> empleos = new ArrayList<>();
+    String query = "SELECT * FROM empleos "
+            + "INNER JOIN usuarios ON empleos.idEmpleado = usuarios.id "
+            + "WHERE usuarios.id = " + idUsuario;
+    try (
+        java.sql.Connection connection = cx.conectar();
+        java.sql.Statement st = connection.createStatement();
+        java.sql.ResultSet rs = st.executeQuery(query)
+    ) {
+        while (rs.next()) {
+            int id = rs.getInt("id"); 
+            int idEmpleado = rs.getInt("idEmpleado");
+            Date fecha = rs.getDate("fechaEmpleo");
+            String descripcion = rs.getString("descripcion"); 
+            
+            Empleo empleoModel = new Empleo(id, idEmpleado, fecha, descripcion);
+            empleos.add(empleoModel);
         }
-        return empleos;
+    } catch (SQLException ex) {
+        Logger.getLogger(UsuariosDB.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return empleos;
+}
 }

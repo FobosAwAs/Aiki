@@ -41,7 +41,7 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     modelo.addColumn("Descripción");
 
     // Simulación: Lista de objetos Empleo
-    List<Empleo> empleos = EmpleadoDB.getEmpleadoByUsuario(cx, usuario.getUsuario()); // Método para obtener los empleos
+    List<Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, usuario.getId()); // Método para obtener los empleos
 
     // Llenar la tabla con los datos de los objetos Empleo
     for (Empleo empleo : empleos) {

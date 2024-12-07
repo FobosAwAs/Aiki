@@ -181,7 +181,8 @@ public class PrincipalCliente extends javax.swing.JFrame {
         jCalendarCliente.setDate(null);
         List<Date> fechas = new ArrayList<>();
         if(!"Seleccione...".equals(empleadoSeleccionado)){
-            List <Empleo> empleos = EmpleadoDB.getEmpleadoByUsuario(cx, empleadoSeleccionado);
+            int idEmpleado = obtenerIdEmpleado(empleadoSeleccionado);
+            List <Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, idEmpleado);
             for (Empleo empleo : empleos) {            
                 System.out.println(empleo.getFecha());
                 fechas.add(empleo.getFecha());
@@ -248,7 +249,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         jComboEmpleados.removeAllItems();
         jComboEmpleados.addItem("Seleccione...");
         for (Usuario user : empleados) {            
-            jComboEmpleados.addItem(user.getNombre());
+            jComboEmpleados.addItem(user.getId() + "-" + user.getNombre().concat(" " + user.getApellido()));
         }
     }
    
@@ -312,15 +313,18 @@ public class PrincipalCliente extends javax.swing.JFrame {
         return sdf.format(date1).equals(sdf.format(date2));
     }
     
-    private int obtenerIdEmpleado(String nombre){
-        for(Usuario empleado: this.empleados){
-            if(nombre.equals(empleado.getNombre())){
-                return empleado.getId();
-            }
+    private int obtenerIdEmpleado(String nombre) {
+    if (nombre != null && nombre.contains("-")) {
+        String[] partes = nombre.split("-");
+        try {
+            return Integer.parseInt(partes[0].trim()); // Convertir la primera parte a entero
+        } catch (NumberFormatException e) {
+            System.err.println("Error al convertir el ID: " + e.getMessage());
         }
-        return 0;
     }
-    
+    return -1; // Retorna un valor por defecto si el formato es inválido
+}
+  
     public boolean validarCampos(int id, Date fecha) {
         return !(id == 0 || fecha == null);
     }
