@@ -2,13 +2,14 @@ package ventanas;
 
 import dbconnect.DBConnect;
 import dbconnect.EmpleadoDB;
+import dbconnect.EmpleoDB;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
 import models.Empleo;
+import models.EmpleoTableModel;
+import models.EmpleoTableRenderer;
 import models.Usuario;
-import static ventanas.Login.cx;
 
 public class PrincipalEmpleado extends javax.swing.JFrame {
 
@@ -33,29 +34,14 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     }
     
     private void cargarTabla() {
-    // Crear el modelo de la tabla
-    DefaultTableModel modelo = new DefaultTableModel();
-    modelo.addColumn("ID");
-    modelo.addColumn("ID Empleado");
-    modelo.addColumn("Fecha");
-    modelo.addColumn("Descripción");
-
-    // Simulación: Lista de objetos Empleo
-    List<Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, usuario.getId()); // Método para obtener los empleos
-
-    // Llenar la tabla con los datos de los objetos Empleo
-    for (Empleo empleo : empleos) {
-        modelo.addRow(new Object[]{
-            empleo.getId(),
-            empleo.getIdEmpleado(),
-            empleo.getFecha(),
-            empleo.getDescripcion()
-        });
+        // Simulación: Lista de objetos Empleo
+        List<Empleo> empleos = EmpleadoDB.getEmpleadoByIdUsuario(cx, usuario.getId()); // Método para obtener los empleos
+        // Crear el modelo de la tabla
+        EmpleoTableModel empleoModel = new EmpleoTableModel(empleos);
+        // Asignar el modelo a la tabla
+        tablaEmpleo.setDefaultRenderer(Object.class, new EmpleoTableRenderer());
+        tablaEmpleo.setModel(empleoModel);
     }
-
-    // Asignar el modelo a la tabla
-    tablaEmpleo.setModel(modelo);
-}
 
 
     public Usuario getUsuario() {
@@ -84,7 +70,9 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setSize(new java.awt.Dimension(800, 600));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaEmpleo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,10 +85,14 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaEmpleo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaEmpleoMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tablaEmpleo);
 
-        getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(30, 70, 680, 240);
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 29, 540, 320));
 
         jMenu1.setLabel("Solicitudes");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +159,26 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
 
+    private void tablaEmpleoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEmpleoMouseClicked
+        int columna = tablaEmpleo.getColumnModel().getColumnIndexAtX(evt.getX());
+        int fila = evt.getY() / tablaEmpleo.getRowHeight();
+        int colCount = tablaEmpleo.getColumnCount();
+        int filCount = tablaEmpleo.getRowCount();
+        
+        if (columna <= colCount && columna >= 0 && fila <= filCount && fila >= 0) {
+            EmpleoTableModel tm = (EmpleoTableModel)tablaEmpleo.getModel();
+            Empleo e = tm.getEmpleo(fila);
+            
+            if (columna == EmpleoTableModel.DELETE_COLUMN) {
+                rechazarEmpleo(e);
+                tm.eliminarEmpleo(fila);
+            } else if (columna == EmpleoTableModel.ACCEPT_COLUMN && validarAceptarEmpleo(e, fila)) {
+                aceptarEmpleo(e);
+            }
+            tm.fireTableDataChanged();
+        }
+    }//GEN-LAST:event_tablaEmpleoMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -198,6 +210,40 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
                 new PrincipalEmpleado().setVisible(true);
             }
         });
+    }
+    
+    public boolean validarAceptarEmpleo(Empleo e, int fila) {
+        EmpleoTableModel tm = (EmpleoTableModel)tablaEmpleo.getModel();
+        for (int i = 0; i < tm.getRowCount(); i++) {
+            if (i == fila) {
+                continue;
+            }
+            
+            Empleo t = tm.getEmpleo(i);
+            if (t.getFecha().equals(e.getFecha()) && (t.getEstado() == 1) || e.getEstado() == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void aceptarEmpleo(Empleo e) {
+        if (e.getEstado() == 0) {
+            EmpleoDB.actualizarEstadoEmpleo(cx, e.getId());
+            e.setEstado(1);
+            System.out.println("Actualizado -> " + e.getId() + " | " + e);
+        } else {
+            System.out.println("Skippeado   -> " + e.getId() + " | " + e);
+        }
+    }
+    
+    public void rechazarEmpleo(Empleo e) {
+        if (e.getEstado() == 0) {
+            EmpleoDB.eliminarEmpleo(cx, e.getId());
+            System.out.println("Eliminado -> " + e.getId() + " | " + e);
+        } else {
+            System.out.println("Skippeado   -> " + e.getId() + " | " + e);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
