@@ -200,7 +200,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         int idEmpleado = obtenerIdEmpleado(nombreEmpleado);
         
         Empleo nuevoEmpleo = 
-                new Empleo(0, idEmpleado, fechaSeleccionada, descripcion);
+                new Empleo(0, idEmpleado, fechaSeleccionada, descripcion, 0);
         
         if(validarCampos(idEmpleado, fechaSeleccionada)){
             EmpleoDB.insertEmpleoByEmpleado(cx, nuevoEmpleo);

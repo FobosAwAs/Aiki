@@ -58,8 +58,9 @@ public static List<Empleo> getEmpleadoByIdUsuario(DBConnect cx, int idUsuario) {
             int idEmpleado = rs.getInt("idEmpleado");
             Date fecha = rs.getDate("fechaEmpleo");
             String descripcion = rs.getString("descripcion"); 
-            
-            Empleo empleoModel = new Empleo(id, idEmpleado, fecha, descripcion);
+            int estado = rs.getInt("estado");
+                    
+            Empleo empleoModel = new Empleo(id, idEmpleado, fecha, descripcion, estado);
             empleos.add(empleoModel);
         }
     } catch (SQLException ex) {

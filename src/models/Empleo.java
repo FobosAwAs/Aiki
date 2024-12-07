@@ -15,11 +15,22 @@ public class Empleo {
     int idEmpleado;
     Date fecha;
     String descripcion;
+    int estado;
 
-    public Empleo(int id, int idEmpleado, Date fecha, String descripcion) {
+    public Empleo(int id, int idEmpleado, Date fecha, String descripcion, int estado) {
+        this.id = id;
         this.idEmpleado = idEmpleado;
         this.fecha = fecha;
         this.descripcion = descripcion;
+        this.estado = estado;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public int getId() {
