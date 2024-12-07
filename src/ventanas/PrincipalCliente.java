@@ -168,12 +168,14 @@ public class PrincipalCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jComboEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadosActionPerformed
-        
+        jCalendarCliente.setEnabled(false);
+        textDescripcion.setEnabled(false);
     }//GEN-LAST:event_jComboEmpleadosActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String empleadoSeleccionado = this.jComboEmpleados.getSelectedItem().toString();
         jCalendarCliente.setEnabled(true);
+        textDescripcion.setEnabled(true);
         jCalendarCliente.setDate(null);
         List<Date> fechas = new ArrayList<>();
         if(!"Seleccione...".equals(empleadoSeleccionado)){
