@@ -59,20 +59,14 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaEmpleo = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         menuPrincipal = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 600));
-        setSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(null);
 
         tablaEmpleo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,72 +86,26 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tablaEmpleo);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 29, 540, 320));
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(30, 70, 680, 240);
 
-        jMenu1.setLabel("Solicitudes");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Tabla de empleos");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(280, 30, 210, 30);
+
+        jButton1.setText("Desconectar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("ABRIR VENTANA 1");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jCheckBoxMenuItem1);
-
-        menuPrincipal.add(jMenu1);
-
-        jMenu2.setLabel("Editar agenda");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
-
-        jCheckBoxMenuItem2.setSelected(true);
-        jCheckBoxMenuItem2.setText("ABRIR VENTANA 2");
-        jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jCheckBoxMenuItem2);
-
-        menuPrincipal.add(jMenu2);
-
-        jMenu3.setLabel("Notificaciones");
-        menuPrincipal.add(jMenu3);
-
-        jMenu4.setAlignmentX(1.0F);
-        jMenu4.setLabel("Perfil");
-        jMenu4.setVerifyInputWhenFocusTarget(false);
-        menuPrincipal.add(jMenu4);
-
+        getContentPane().add(jButton1);
+        jButton1.setBounds(610, 20, 100, 23);
         setJMenuBar(menuPrincipal);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-       
-    }//GEN-LAST:event_jMenu1ActionPerformed
-
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-       
-    }//GEN-LAST:event_jMenu2ActionPerformed
-
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-      
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
-
-    private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
-       
-    }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
 
     private void tablaEmpleoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEmpleoMouseClicked
         int columna = tablaEmpleo.getColumnModel().getColumnIndexAtX(evt.getX());
@@ -178,6 +126,12 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
             tm.fireTableDataChanged();
         }
     }//GEN-LAST:event_tablaEmpleoMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+        Login loginFrame = new Login();
+        loginFrame.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -247,12 +201,8 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuBar menuPrincipal;

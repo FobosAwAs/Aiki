@@ -75,7 +75,7 @@ public class Proceso extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Eras Bold ITC", 3, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("CARGANO SISTEMA...");
+        jLabel2.setText("CARGANDO SISTEMA...");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 674, 32));
 
         pack();
