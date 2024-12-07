@@ -6,6 +6,7 @@ import dbconnect.EmpleoDB;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import models.Empleo;
 import models.EmpleoTableModel;
 import models.EmpleoTableRenderer;
@@ -120,10 +121,18 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
             if (columna == EmpleoTableModel.DELETE_COLUMN) {
                 rechazarEmpleo(e);
                 tm.eliminarEmpleo(fila);
-            } else if (columna == EmpleoTableModel.ACCEPT_COLUMN && validarAceptarEmpleo(e, fila)) {
-                aceptarEmpleo(e);
+                tm.fireTableDataChanged();
+                return;
+            } 
+            
+            if (columna == EmpleoTableModel.ACCEPT_COLUMN) {
+                if (validarAceptarEmpleo(e, fila)) {
+                    aceptarEmpleo(e);
+                    tm.fireTableDataChanged();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ya tiene un trabajo aceptado en la fecha asignada (" + e.getFecha() + ")", "Acción inválida", JOptionPane.WARNING_MESSAGE);
+                }
             }
-            tm.fireTableDataChanged();
         }
     }//GEN-LAST:event_tablaEmpleoMouseClicked
 
@@ -192,12 +201,8 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
     }
     
     public void rechazarEmpleo(Empleo e) {
-        if (e.getEstado() == 0) {
-            EmpleoDB.eliminarEmpleo(cx, e.getId());
-            System.out.println("Eliminado -> " + e.getId() + " | " + e);
-        } else {
-            System.out.println("Skippeado   -> " + e.getId() + " | " + e);
-        }
+        EmpleoDB.eliminarEmpleo(cx, e.getId());
+        System.out.println("Eliminado -> " + e.getId() + " | " + e);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

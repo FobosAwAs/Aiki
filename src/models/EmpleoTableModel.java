@@ -93,7 +93,7 @@ public class EmpleoTableModel extends AbstractTableModel  {
             case 2 -> empleo.getFecha();
             case 3 -> empleo.getDescripcion();
             case 4 -> (empleo.getEstado() == 0) ? aceptarEnabled : aceptarDisabled;
-            case 5 -> (empleo.getEstado() == 0) ? rechazarEnabled : rechazarDisabled;
+            case 5 -> rechazarEnabled;
             default -> null;
         };
     }
