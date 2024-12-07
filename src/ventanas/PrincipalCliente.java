@@ -46,17 +46,8 @@ public class PrincipalCliente extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         jCalendarCliente = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         menuPrincipal = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        menuTipoEmpleado = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        listadoEmpleados = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        borrarNotificacion = new javax.swing.JMenuItem();
-        verNotificaciones = new javax.swing.JMenuItem();
-        marcarComoVisto = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        logOut = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -69,7 +60,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jComboEmpleados);
-        jComboEmpleados.setBounds(220, 80, 170, 22);
+        jComboEmpleados.setBounds(60, 70, 220, 22);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -78,20 +69,20 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(410, 80, 80, 23);
+        btnBuscar.setBounds(350, 70, 80, 23);
 
         jScrollPane2.setViewportView(textDescripcion);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(220, 200, 290, 70);
+        jScrollPane2.setBounds(60, 200, 550, 70);
 
         jLabel2.setText("Filtrar Empleado");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(220, 60, 80, 16);
+        jLabel2.setBounds(60, 50, 140, 16);
 
         jLabel3.setText("Fecha");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(220, 110, 90, 16);
+        jLabel3.setBounds(60, 110, 90, 16);
 
         btnAgregar.setText("Agregar solicitud");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -100,72 +91,26 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnAgregar);
-        btnAgregar.setBounds(220, 320, 120, 30);
+        btnAgregar.setBounds(300, 320, 120, 30);
         getContentPane().add(jCalendarCliente);
-        jCalendarCliente.setBounds(220, 130, 220, 30);
+        jCalendarCliente.setBounds(60, 130, 220, 30);
 
         jLabel4.setText("Descripción");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(220, 180, 90, 16);
+        jLabel4.setBounds(60, 180, 90, 16);
 
-        jMenu1.setText("Tipo de empleado");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Desconectar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-
-        menuTipoEmpleado.setText("jMenuItem2");
-        jMenu1.add(menuTipoEmpleado);
-
-        menuPrincipal.add(jMenu1);
-
-        jMenu2.setText("Listado de empleados");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
-
-        listadoEmpleados.setText("jMenuItem2");
-        jMenu2.add(listadoEmpleados);
-
-        menuPrincipal.add(jMenu2);
-
-        jMenu3.setLabel("Notificaciones");
-
-        borrarNotificacion.setText("jMenuItem2");
-        jMenu3.add(borrarNotificacion);
-
-        verNotificaciones.setText("jMenuItem2");
-        jMenu3.add(verNotificaciones);
-
-        marcarComoVisto.setText("jMenuItem2");
-        jMenu3.add(marcarComoVisto);
-
-        menuPrincipal.add(jMenu3);
-
-        jMenu4.setAlignmentX(1.0F);
-        jMenu4.setLabel("Perfil");
-        jMenu4.setVerifyInputWhenFocusTarget(false);
-
-        logOut.setText("jMenuItem2");
-        jMenu4.add(logOut);
-
-        menuPrincipal.add(jMenu4);
-
+        getContentPane().add(jButton1);
+        jButton1.setBounds(540, 10, 100, 30);
         setJMenuBar(menuPrincipal);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        v1.setVisible(true);
-    }//GEN-LAST:event_jMenu1ActionPerformed
-
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        v2.setVisible(true);
-    }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jComboEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadosActionPerformed
         jCalendarCliente.setEnabled(false);
@@ -209,6 +154,13 @@ public class PrincipalCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor complete los campos");
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  
+    this.dispose();
+    Login loginFrame = new Login(); 
+    loginFrame.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -278,26 +230,17 @@ public class PrincipalCliente extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem borrarNotificacion;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jCalendarCliente;
     private javax.swing.JComboBox<String> jComboEmpleados;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JMenuItem listadoEmpleados;
-    private javax.swing.JMenuItem logOut;
-    private javax.swing.JMenuItem marcarComoVisto;
     private javax.swing.JMenuBar menuPrincipal;
-    private javax.swing.JMenuItem menuTipoEmpleado;
     private javax.swing.JTextPane textDescripcion;
-    private javax.swing.JMenuItem verNotificaciones;
     // End of variables declaration//GEN-END:variables
 }

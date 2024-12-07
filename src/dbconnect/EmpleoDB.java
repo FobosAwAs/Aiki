@@ -51,4 +51,18 @@ public class EmpleoDB {
             Logger.getLogger(UsuariosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public static void eliminarEmpleo(DBConnect cx, int idEmpleado) {
+        String query = "DELETE FROM empleos WHERE id = ?";
+
+        try (
+                java.sql.Connection connection = cx.conectar(); java.sql.PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, idEmpleado);
+
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuariosDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
