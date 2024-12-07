@@ -39,12 +39,12 @@ public class EmpleoDB {
         }
     }
 
-    public static void actualizarEstadoEmpleo(DBConnect cx, int idEmpleado) {
+    public static void actualizarEstadoEmpleo(DBConnect cx, int id) {
         String query = "UPDATE empleos SET estado = 1 WHERE id = ?";
 
         try (
                 java.sql.Connection connection = cx.conectar(); java.sql.PreparedStatement pst = connection.prepareStatement(query)) {       
-            pst.setInt(1, idEmpleado);
+            pst.setInt(1, id);
 
             pst.executeUpdate();
         } catch (SQLException ex) {
@@ -52,12 +52,12 @@ public class EmpleoDB {
         }
     }
 
-    public static void eliminarEmpleo(DBConnect cx, int idEmpleado) {
+    public static void eliminarEmpleo(DBConnect cx, int id) {
         String query = "DELETE FROM empleos WHERE id = ?";
 
         try (
                 java.sql.Connection connection = cx.conectar(); java.sql.PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, idEmpleado);
+            pst.setInt(1, id);
 
             pst.executeUpdate();
         } catch (SQLException ex) {
