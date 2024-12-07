@@ -29,6 +29,33 @@ public class Registro extends javax.swing.JFrame {
         cx.conectar();
     }
 
+    private void limpiarCamposYRedirigir() {
+        // Limpiar campos
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtUsuario.setText("");
+        txtPassword.setText("");
+        tipoUsuarioChoice.setSelectedIndex(0);
+
+        // Redirigir al Login
+        Login loginFrame = new Login(); // Instanciar la pantalla Login
+        loginFrame.setVisible(true); // Mostrar la pantalla Login
+        this.dispose(); // Cerrar la ventana actual
+    }
+
+    private boolean validarCampos() {
+        if (txtNombre.getText().trim().isEmpty()
+                || txtApellido.getText().trim().isEmpty()
+                || txtUsuario.getText().trim().isEmpty()
+                || String.valueOf(txtPassword.getPassword()).trim().isEmpty()
+                || tipoUsuarioChoice.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe diligenciar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -89,7 +116,12 @@ public class Registro extends javax.swing.JFrame {
         });
         getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 190, -1));
 
-        tipoUsuarioChoice.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empleado", "Cliente" }));
+        tipoUsuarioChoice.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Empleado", "Cliente" }));
+        tipoUsuarioChoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tipoUsuarioChoiceActionPerformed(evt);
+            }
+        });
         getContentPane().add(tipoUsuarioChoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 160, -1));
 
         jLabel3.setText("Tipo de Usuario");
@@ -113,20 +145,17 @@ public class Registro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-     
-     
-        Usuario usuario = new Usuario();
-        usuario.setNombre(txtNombre.getText());
-        usuario.setApellido(txtApellido.getText());
-        usuario.setUsuario(txtUsuario.getText());
-        usuario.setContrasena(String.valueOf(txtPassword.getPassword()));
-        usuario.setRol(tipoUsuarioChoice.getSelectedItem().toString().equals("Cliente") ? "C" : "E"); 
+        if (validarCampos()) {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(txtNombre.getText());
+            usuario.setApellido(txtApellido.getText());
+            usuario.setUsuario(txtUsuario.getText());
+            usuario.setContrasena(String.valueOf(txtPassword.getPassword()));
+            usuario.setRol(tipoUsuarioChoice.getSelectedItem().toString().equals("Cliente") ? "C" : "E");
 
-        UsuariosDB.insertUser(cx, usuario);
-
-
-    
-
+            UsuariosDB.insertUser(cx, usuario);
+            limpiarCamposYRedirigir();
+        }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
@@ -145,6 +174,10 @@ public class Registro extends javax.swing.JFrame {
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void tipoUsuarioChoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoUsuarioChoiceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipoUsuarioChoiceActionPerformed
 
     /**
      * @param args the command line arguments
